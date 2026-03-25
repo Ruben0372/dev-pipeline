@@ -1,0 +1,13 @@
+{
+  "overview": {"label": "Overview", "order": 0, "icon": "file-text"},
+  "architecture": {"label": "Architecture", "order": 1, "icon": "layers"},
+  "api": {"label": "API", "order": 2, "icon": "code"},
+  "requirements": {"label": "Requirements", "order": 3, "icon": "list-checks"},
+  "plans": {"label": "Plans", "order": 4, "icon": "clipboard-list"},
+  "handoffs": {"label": "Handoffs", "order": 5, "icon": "arrow-right-left"},
+  "reviews": {"label": "Reviews", "order": 6, "icon": "check-circle"},
+  "reports": {"label": "Reports", "order": 7, "icon": "bar-chart"},
+  "retros": {"label": "Retros", "order": 8, "icon": "rotate-ccw"},
+  "security": {"label": "Security", "order": 9, "icon": "shield"},
+  "operations": {"label": "Operations", "order": 10, "icon": "settings"}
+}

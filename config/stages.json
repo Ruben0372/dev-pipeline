@@ -1,0 +1,10 @@
+[
+  {"id": "ideate", "label": "Ideate", "icon": "lightbulb", "order": 0},
+  {"id": "plan", "label": "Plan", "icon": "ruler", "order": 1},
+  {"id": "setup", "label": "Setup", "icon": "hard-hat", "order": 2},
+  {"id": "build", "label": "Build", "icon": "hammer", "order": 3},
+  {"id": "test", "label": "Test", "icon": "search", "order": 4},
+  {"id": "review", "label": "Review", "icon": "clipboard", "order": 5},
+  {"id": "ship", "label": "Ship", "icon": "truck", "order": 6},
+  {"id": "retro", "label": "Retro", "icon": "party-popper", "order": 7}
+]
