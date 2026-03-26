@@ -112,6 +112,7 @@ List all project pipeline states.
     "current_stage": "ideate | plan | setup | build | test | review | ship | retro",
     "previous_stage": "string",
     "stage_entered_at": "ISO 8601",
+    "site_slug": "string (nullable, maps project to dev-pipeline folder name)",
     "notes": "string",
     "created_at": "ISO 8601",
     "updated_at": "ISO 8601"
@@ -228,6 +229,31 @@ Move a project to a previous stage with a reason. Broadcasts a `pipeline_kickbac
 |--------|---------|
 | 200 | Success |
 | 400 | Invalid stage or JSON |
+| 500 | Project not found or internal error |
+| 503 | Pipeline store not configured |
+
+### PUT /api/pipeline/{projectId}/slug
+
+Set the site slug for a project. The site slug maps a Notion project UUID to a dev-pipeline folder name (e.g., `"dashboard"`), which is used by the frontend to resolve site record lookups via `/api/sites/{slug}/records`.
+
+**Path params:** `projectId` -- project identifier (Notion page UUID)
+
+**Request body**
+
+```json
+{
+  "site_slug": "dashboard"
+}
+```
+
+`site_slug` is required and must be a non-empty string matching a folder under `sites/` in the dev-pipeline repo.
+
+**Response (200)** -- updated PipelineState object (includes `site_slug` field)
+
+| Status | Meaning |
+|--------|---------|
+| 200 | Success |
+| 400 | Missing or empty site_slug, or invalid JSON |
 | 500 | Project not found or internal error |
 | 503 | Pipeline store not configured |
 

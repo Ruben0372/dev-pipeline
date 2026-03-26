@@ -46,7 +46,7 @@ v1.1.1
 - **Weather** -- Current conditions and forecast via Open-Meteo API.
 - **Dispatch** -- AI work queue with prompt submission, processing, and real-time WebSocket status.
 - **Activity** -- Chronological activity timeline across all features.
-- **Site records** -- Per-project documentation served from the dev-pipeline git repo (filesystem-backed, git-synced every 2 minutes).
+- **Site records** -- Per-project documentation served from the dev-pipeline git repo (filesystem-backed, git-synced every 2 minutes). Each pipeline project maps to a folder via `site_slug` (e.g., a Notion UUID maps to `"dashboard"`) so the frontend resolves records at `/api/sites/{site_slug}/records`.
 
 ## Links
 

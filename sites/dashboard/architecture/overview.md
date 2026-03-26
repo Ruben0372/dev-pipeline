@@ -108,7 +108,7 @@ database table (or filesystem resource).
 | MetricStore      | metrics table   | Per-request method/path/status/duration     |
 | PomodoroStore    | pomodoro_sessions table | Work/break session history           |
 | CanvasStore      | canvases table  | Stroke data stored as JSON text column      |
-| PipelineStore    | pipeline_states + pipeline_history | Stage state + audit log      |
+| PipelineStore    | pipeline_states + pipeline_history | Stage state + audit log. `site_slug` column maps Notion UUIDs to dev-pipeline folder names |
 | SiteRecordStore  | Filesystem      | Reads markdown from dev-pipeline git repo   |
 
 ### Middleware
@@ -196,7 +196,7 @@ Database file: `/data/dashboard.db` (volume-mounted from host).
 
 ### Migrations
 
-10 sequential migrations (index 0 through 9), tracked in a `schema_version`
+11 sequential migrations (index 0 through 10), tracked in a `schema_version`
 table. Append-only -- never edit or reorder existing entries. Applied
 automatically on startup inside transactions.
 
@@ -212,6 +212,7 @@ automatically on startup inside transactions.
 | 7     | site_records, site_records_fts     | Per-project documentation        |
 | 8     | scheduled_tasks                    | Cron-like task runner            |
 | 9     | pipeline_history                   | Pipeline stage transition audit  |
+| 10    | (alter pipeline_states)            | Add `site_slug` column for dev-pipeline folder mapping |
 
 ### FTS5 Usage
 
@@ -285,8 +286,11 @@ The scheduler (`services/scheduler.go`) runs two periodic tasks:
 
 Site records are read directly from the filesystem (not from SQLite). The
 `SiteRecordStore` walks the directory tree under
-`{DEV_PIPELINE_REPO_PATH}/sites/{projectId}/` and serves markdown files
-through the REST API.
+`{DEV_PIPELINE_REPO_PATH}/sites/{site_slug}/` and serves markdown files
+through the REST API. The `site_slug` column on `pipeline_states` (added in
+migration 10) maps a Notion project UUID to the folder name used for lookups.
+The frontend reads `state.site_slug` to call `/api/sites/{slug}/records`
+instead of using the raw Notion UUID as the path segment.
 
 ## Docker
 
