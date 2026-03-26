@@ -1,0 +1,4 @@
+#!/bin/bash
+# Auto-push to origin after every commit
+# Runs in background to avoid blocking the commit
+(git push origin main &>/dev/null &)
