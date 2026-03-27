@@ -1,0 +1,7 @@
+project: dev-pipeline
+profile: code
+deploy_path: /mnt/WaRlOrD/dashboard-data/dev-pipeline
+ports: {}
+arch_ip: 100.103.184.98
+smoke_url: ""
+known_issues: []
