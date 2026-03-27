@@ -1,0 +1,42 @@
+name: enterprise
+description: "Enterprise project — CDK deploy with compliance gate"
+stages:
+  - name: ideate
+    trigger: manual
+    gate: null
+    next: plan
+  - name: plan
+    trigger: manual
+    gate: "PRD + architecture doc exists"
+    next: setup
+  - name: setup
+    trigger: manual
+    gate: "repo + CI + infra scaffold"
+    next: build
+  - name: build
+    trigger: "commit detected"
+    gate: "code compiles"
+    next: test
+  - name: test
+    trigger: "build passes"
+    gate: "test-gate passes (90%+ coverage)"
+    next: review
+  - name: review
+    trigger: "tests pass"
+    gate: "code-reviewer + security-reviewer pass"
+    next: compliance
+  - name: compliance
+    trigger: "review approved"
+    gate: "HIPAA checklist + migration plan reviewed"
+    next: ship
+  - name: ship
+    trigger: "compliance approved"
+    gate: "CDK deploy succeeds"
+    next: retro
+  - name: retro
+    trigger: "deploy confirmed"
+    gate: null
+    next: null
+ship_action: "cdk deploy with migration review"
+targets:
+  - vitalis

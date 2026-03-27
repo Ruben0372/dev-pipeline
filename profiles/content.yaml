@@ -1,0 +1,38 @@
+name: content
+description: "Content/video project — manual-only transitions for v1.0.1"
+stages:
+  - name: ideate
+    trigger: manual
+    gate: null
+    next: plan
+  - name: plan
+    trigger: manual
+    gate: "outline or script exists"
+    next: shoot
+  - name: shoot
+    trigger: manual
+    gate: "footage captured"
+    next: edit
+  - name: edit
+    trigger: manual
+    gate: "rough cut complete"
+    next: render
+  - name: render
+    trigger: manual
+    gate: "final render exported"
+    next: review
+  - name: review
+    trigger: manual
+    gate: "quality check passed"
+    next: ship
+  - name: ship
+    trigger: manual
+    gate: "uploaded to platform"
+    next: retro
+  - name: retro
+    trigger: manual
+    gate: null
+    next: null
+ship_action: "export + upload to platform"
+targets:
+  - adune

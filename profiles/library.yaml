@@ -1,0 +1,34 @@
+name: library
+description: "Library/package project — publish to registry"
+stages:
+  - name: ideate
+    trigger: manual
+    gate: null
+    next: plan
+  - name: plan
+    trigger: manual
+    gate: "plan doc exists"
+    next: build
+  - name: build
+    trigger: "commit detected"
+    gate: "code compiles"
+    next: test
+  - name: test
+    trigger: "build passes"
+    gate: "test-gate passes"
+    next: review
+  - name: review
+    trigger: "tests pass"
+    gate: "code-reviewer agent passes"
+    next: publish
+  - name: publish
+    trigger: "review approved"
+    gate: "version bumped + changelog updated"
+    next: retro
+  - name: retro
+    trigger: "publish confirmed"
+    gate: null
+    next: null
+ship_action: "auto-detect: poetry publish | npm publish | go install"
+targets:
+  - mentalist

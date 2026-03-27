@@ -1,0 +1,40 @@
+name: code
+description: "Standard code project — Docker deploy to Arch"
+stages:
+  - name: ideate
+    trigger: manual
+    gate: null
+    next: plan
+  - name: plan
+    trigger: manual
+    gate: "plan doc exists"
+    next: setup
+  - name: setup
+    trigger: manual
+    gate: "repo + CI initialized"
+    next: build
+  - name: build
+    trigger: "commit detected"
+    gate: "code compiles"
+    next: test
+  - name: test
+    trigger: "build passes"
+    gate: "test-gate passes"
+    next: review
+  - name: review
+    trigger: "tests pass"
+    gate: "code-reviewer agent passes"
+    next: ship
+  - name: ship
+    trigger: "review approved"
+    gate: "make ship succeeds"
+    next: retro
+  - name: retro
+    trigger: "deploy confirmed"
+    gate: null
+    next: null
+ship_action: "make ship"
+targets:
+  - dashboard
+  - atlax
+  - mileats
