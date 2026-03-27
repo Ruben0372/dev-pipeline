@@ -428,3 +428,22 @@ make test-web
 ```bash
 make test
 ```
+
+---
+
+## Smoke Endpoints
+
+Defined in `.smoke` at the repo root. Format: `URL|expected_status|body_substring`
+
+| URL | Status | Body Check |
+|-----|--------|------------|
+| `http://100.103.184.98:7070/health` | 200 | `ok` |
+| `http://100.103.184.98:3009/` | 200 | `tower` |
+
+Run manually:
+
+```bash
+make smoke
+```
+
+`make ship` runs `test-gate` then `smoke` automatically.

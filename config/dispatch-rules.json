@@ -1,0 +1,40 @@
+{
+  "severity_routing": {
+    "critical": {
+      "dispatch_mode": "auto",
+      "approval": "auto",
+      "queue_priority": "interrupt",
+      "auto_fix": true,
+      "fix_strategy": "branch_pr"
+    },
+    "high": {
+      "dispatch_mode": "auto",
+      "approval": "auto",
+      "queue_priority": "next",
+      "auto_fix": true,
+      "fix_strategy": "branch_pr"
+    },
+    "medium": {
+      "dispatch_mode": "queued",
+      "approval": "needs_approval",
+      "queue_priority": "fifo",
+      "auto_fix": true,
+      "fix_strategy": "branch_pr"
+    },
+    "low": {
+      "dispatch_mode": "queued",
+      "approval": "needs_approval",
+      "queue_priority": "fifo",
+      "auto_fix": true,
+      "fix_strategy": "branch_pr"
+    }
+  },
+  "retry_policy": {
+    "max_retries": 3,
+    "cooldown_minutes": 15
+  },
+  "concurrency": {
+    "max_concurrent_dispatches": 1,
+    "queue_order": "fifo_with_priority_interrupt"
+  }
+}

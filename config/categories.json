@@ -9,5 +9,6 @@
   "reports": {"label": "Reports", "order": 7, "icon": "bar-chart"},
   "retros": {"label": "Retros", "order": 8, "icon": "rotate-ccw"},
   "security": {"label": "Security", "order": 9, "icon": "shield"},
-  "operations": {"label": "Operations", "order": 10, "icon": "settings"}
+  "operations": {"label": "Operations", "order": 10, "icon": "settings"},
+  "issues": {"label": "Issues", "order": 11, "icon": "alert-circle"}
 }
