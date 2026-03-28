@@ -6,7 +6,7 @@ An 8-stage development loop (Ideate → Plan → Setup → Build → Test → Re
 
 ## Version
 
-v1.0 — initial implementation
+v1.0.1 — issue reporting, auto-dispatch, multi-project profiles, observability
 
 ## Tech
 
@@ -23,12 +23,27 @@ dev-pipeline/
 ├── sites/                    # Per-project documentation
 │   ├── dashboard/            # The Tower
 │   ├── dev-pipeline/         # This project (meta)
+│   ├── portfolio/            # Portfolio site
 │   └── ...
 ├── scripts/
-│   ├── scaffold.sh           # Create new site record
-│   └── notion-sync-tasks.sh  # Post-commit reminder
+│   ├── scaffold.sh           # Create new site with profile support
+│   ├── report-issue.sh       # File structured issue reports
+│   ├── record-metric.sh      # Record pipeline stage timing data
+│   ├── commit-doc.sh         # Commit docs with standardized messages
+│   ├── cache-warm.sh         # Docker image cache warming
+│   └── notion-sync-tasks.sh  # Sync tasks with Notion
+├── config/
+│   ├── categories.json       # 12 category types with labels, ordering, icons
+│   ├── dispatch-rules.json   # Severity -> dispatch routing rules
+│   └── stages.json           # Pipeline stage definitions
+├── profiles/
+│   ├── code.yaml             # Standard Docker deploy (Dashboard, Atlax, MilEats)
+│   ├── library.yaml          # Registry publish (Mentalist)
+│   ├── content.yaml          # Content export (Adune)
+│   └── enterprise.yaml       # CDK deploy + compliance (Vitalis)
 ├── templates/
-│   └── new-site/             # Folder template for scaffold
+│   ├── new-site/             # Folder template for scaffold
+│   └── issue-report.md       # YAML frontmatter template for issues
 └── README.md
 ```
 
@@ -49,6 +64,7 @@ Each site has these tabs (subfolders):
 | reports/ | Metrics, performance reviews |
 | reviews/ | Code review summaries |
 | security/ | Security audits, compliance |
+| issues/ | Structured issue reports (timestamped, YAML frontmatter with severity/domain/status) |
 
 ## Active Sites
 
@@ -56,6 +72,7 @@ Each site has these tabs (subfolders):
 |------|---------|------|
 | dashboard | The Tower | `dashboard` |
 | dev-pipeline | Dev Pipeline | `dev-pipeline` |
+| portfolio | Portfolio | `portfolio` |
 
 ## Links
 

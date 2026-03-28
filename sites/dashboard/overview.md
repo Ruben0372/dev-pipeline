@@ -44,7 +44,7 @@ v1.1.1
 - **Canvas** -- Freehand drawing canvas with stroke persistence.
 - **Pomodoro** -- Work/break session timer with history tracking.
 - **Weather** -- Current conditions and forecast via Open-Meteo API.
-- **Dispatch** -- AI work queue with prompt submission, processing, and real-time WebSocket status.
+- **Dispatch** -- AI work queue backed by Claude Code CLI. Supports manual and issue-sourced dispatches, human-in-the-loop approval gate (auto/needs_approval/approved/rejected), real-time execution streaming over WebSocket, 10-minute timeout, and retry cap (3 per issue). See `architecture/dispatch.md` for full details.
 - **Activity** -- Chronological activity timeline across all features.
 - **Site records** -- Per-project documentation served from the dev-pipeline git repo (filesystem-backed, git-synced every 2 minutes). Each pipeline project maps to a folder via `site_slug` (e.g., a Notion UUID maps to `"dashboard"`) so the frontend resolves records at `/api/sites/{site_slug}/records`.
 

@@ -790,26 +790,44 @@ Get aggregated API request metrics for a time range. All requests are recorded b
 
 ## Dispatch
 
-AI work dispatch queue with real-time status updates over WebSocket.
+AI work dispatch queue backed by Claude Code CLI with approval gate, issue-sourced dispatches, and real-time execution streaming over WebSocket. See `architecture/dispatch.md` for full system documentation.
+
+### Dispatch Object
+
+```json
+{
+  "id": "string (UUID)",
+  "prompt": "string",
+  "project": "string (nullable)",
+  "status": "queued | running | completed | failed",
+  "output": "string (nullable)",
+  "source_issue_id": "string (nullable, links to dev-pipeline issue)",
+  "approval_status": "auto | needs_approval | approved | rejected",
+  "created_at": "ISO 8601",
+  "updated_at": "ISO 8601"
+}
+```
 
 ### GET /api/dispatch
 
-List all dispatches, ordered by most recent first.
+List all dispatches, ordered by most recent first. Supports pagination.
 
-**Response (200)** -- array of Dispatch objects
+**Query params:** `page` (default 1), `limit` (default 20)
+
+**Response (200)** -- paginated envelope
 
 ```json
-[
-  {
-    "id": "string",
-    "prompt": "string",
-    "project": "string",
-    "status": "queued | processing | completed | failed",
-    "output": "string",
-    "created_at": "ISO 8601",
-    "updated_at": "ISO 8601"
+{
+  "data": [ /* array of Dispatch objects */ ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 42,
+    "total_pages": 3,
+    "has_next": true,
+    "has_prev": false
   }
-]
+}
 ```
 
 | Status | Meaning |
@@ -820,7 +838,7 @@ List all dispatches, ordered by most recent first.
 
 ### POST /api/dispatch
 
-Queue a new work dispatch.
+Queue a new work dispatch. Created with `approval_status = "auto"` (executes immediately).
 
 **Request body**
 
@@ -856,20 +874,65 @@ Get a single dispatch by ID, including output if completed.
 | 500 | Internal error |
 | 503 | Dispatch service not configured |
 
+### PUT /api/dispatch/{id}/approve
+
+Approve a dispatch that is pending human review. Only works if `approval_status = "needs_approval"`.
+
+**Path params:** `id` -- dispatch UUID
+
+**Response (200)**
+
+```json
+{ "status": "approved", "id": "uuid" }
+```
+
+| Status | Meaning |
+|--------|---------|
+| 200 | Approved |
+| 400 | Dispatch is not pending approval |
+| 404 | Dispatch not found |
+
+### PUT /api/dispatch/{id}/reject
+
+Reject a dispatch. Sets `approval_status = "rejected"` and `status = "failed"` with output `"Rejected by user"`.
+
+**Path params:** `id` -- dispatch UUID
+
+**Response (200)**
+
+```json
+{ "status": "rejected", "id": "uuid" }
+```
+
+| Status | Meaning |
+|--------|---------|
+| 200 | Rejected |
+| 404 | Dispatch not found |
+
 ### WS /ws/dispatch
 
-WebSocket endpoint for real-time dispatch status updates. Upgrades a standard HTTP connection to WebSocket.
+WebSocket endpoint for real-time updates. Upgrades a standard HTTP connection to WebSocket.
 
-The server pushes JSON messages as dispatch jobs change status. The client should maintain the connection and listen for messages. Also receives `pipeline_update` and `pipeline_kickback` events.
+The server pushes JSON messages for dispatch execution progress, pipeline stage transitions, and issue discovery events.
 
 **Message format (server to client)**
 
 ```json
 {
-  "type": "pipeline_update | pipeline_kickback | dispatch_status",
+  "type": "<event_type>",
   "payload": { /* varies by type */ }
 }
 ```
+
+**Event types:**
+- `new_dispatch` -- dispatch created via API
+- `dispatch_update` -- dispatch started running
+- `dispatch_progress` -- stdout line from Claude CLI
+- `dispatch_completed` -- dispatch finished (success or failure)
+- `issue_dispatched` -- auto-approved dispatch from dev-pipeline issue
+- `issue_needs_approval` -- dispatch from issue, needs human review
+- `pipeline_update` -- stage advance
+- `pipeline_kickback` -- stage kickback
 
 | Status | Meaning |
 |--------|---------|
@@ -1045,5 +1108,6 @@ All requests pass through the following Chi middleware stack:
 |---------|----------|-------------|
 | TaskSyncService | 2 minutes | Polls Notion tasks DB and syncs to local SQLite |
 | Pipeline Audit Scheduler | 5 minutes | Audits pipeline states and broadcasts updates via WebSocket |
-| Dispatch Processor | Continuous | Processes queued dispatch jobs |
+| Dispatch Processor | 5-second poll | Delegates to DispatchExecutor.ProcessApproved(), one dispatch at a time |
+| IssueScanner | On schedule | Converts open dev-pipeline issues to dispatches with severity-based approval |
 | WebSocket Hub | Continuous | Manages client connections and broadcasts events |

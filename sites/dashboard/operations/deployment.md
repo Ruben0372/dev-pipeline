@@ -69,6 +69,8 @@ Create a `.env` file in the deploy directory. Copy from `.env.example` and fill 
 | `WEATHER_LAT` | (none) | Latitude for weather service (Open-Meteo) |
 | `WEATHER_LON` | (none) | Longitude for weather service (Open-Meteo) |
 | `DEV_PIPELINE_REPO_PATH` | (none) | Path to the dev-pipeline git repo inside the container. Set to `/data/dev-pipeline` in Docker. |
+| `CLAUDE_PATH` | `claude` | Path to the Claude Code CLI binary inside the container |
+| `ANTHROPIC_API_KEY` | (none) | Anthropic API key for Claude Code dispatch execution |
 | `SKIP_VALIDATION` | `false` | Set to `true` to skip Notion connection and schema validation at startup |
 
 ### Degraded Mode
@@ -82,6 +84,7 @@ If optional credentials are missing, the API starts in degraded mode. Affected e
 | `GOOGLE_CREDENTIALS` | Calendar endpoints return 503 |
 | `WEATHER_LAT` or `WEATHER_LON` | Weather endpoint returns 503 |
 | `DEV_PIPELINE_REPO_PATH` | Site records endpoints return 503 |
+| `ANTHROPIC_API_KEY` | Dispatch execution fails (Claude CLI returns auth error) |
 
 ---
 
@@ -93,9 +96,10 @@ Two services defined in `docker-compose.yml`:
 
 - **Image:** Go 1.25-alpine multi-stage build
 - **Build flags:** `CGO_ENABLED=1 CGO_CFLAGS="-DSQLITE_ENABLE_FTS5"` (required for SQLite FTS5)
-- **Runtime packages:** `sqlite-libs`, `wget`, `ca-certificates`, `git`
+- **Runtime packages:** `sqlite-libs`, `wget`, `ca-certificates`, `git`, `nodejs`, `npm` (for Claude Code CLI)
+- **Claude Code CLI:** Installed globally via `npm install -g @anthropic-ai/claude-code`
 - **Port binding:** `100.103.184.98:7070:7070` (Tailscale only)
-- **Volume:** `dashboard-data:/data` (bind mount to `/mnt/WaRlOrD/dashboard-data`)
+- **Volumes:** `dashboard-data:/data` (bind mount to `/mnt/WaRlOrD/dashboard-data`), `/home/rhude667/.claude:/home/tower/.claude:ro` (Claude config mount)
 - **Health check:** `wget -q -O /dev/null http://localhost:7070/health` every 30s
 - **Restart policy:** `unless-stopped`
 
@@ -203,7 +207,7 @@ Run through these steps for every deployment.
 
 1. **SSH into RhudeRuben**
    ```bash
-   ssh 100.103.184.98
+   ssh rhude667@100.103.184.98
    ```
 
 2. **Navigate to deploy directory**

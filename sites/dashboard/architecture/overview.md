@@ -48,7 +48,9 @@ config.Load()
     -> NotionService, CalendarService, WeatherService
     -> TaskSyncService (2-min background poll)
     -> WebSocket Hub (goroutine)
+    -> DispatchExecutor (Claude CLI runner)
     -> DispatchService + Processor
+    -> IssueScanner (dev-pipeline issue -> dispatch)
     -> Scheduler (5-min pipeline audit + 2-min git pull)
     -> handlers.New(...) -- single Handlers struct
     -> chi.NewRouter() -- route registration
@@ -89,7 +91,9 @@ Handler files, one per feature:
 | notion_validation.go| Startup schema + connection validation                   |
 | gcal.go             | Google Calendar API client, event listing, caching       |
 | weather.go          | Open-Meteo HTTP client, response caching                 |
-| dispatch.go         | Dispatch queue processor, activity logging               |
+| dispatch.go         | Dispatch queue manager, CRUD, delegates execution to DispatchExecutor |
+| dispatch_executor.go| Claude Code CLI invocation, stdout streaming, timeout, retry tracking |
+| issue_scanner.go    | Converts dev-pipeline issues into dispatches with severity-based approval routing |
 | ws_hub.go           | WebSocket hub -- register, unregister, broadcast loop    |
 | scheduler.go        | Periodic pipeline audits (5 min) + git-pull (2 min)      |
 
@@ -102,7 +106,7 @@ database table (or filesystem resource).
 |------------------|-----------------|--------------------------------------------|
 | CacheStore       | api_cache table | TTL-based key/value for API response cache  |
 | TaskStore        | tasks table     | Notion ID tracking for bidirectional sync   |
-| DispatchStore    | dispatches table| Prompt queue with status lifecycle          |
+| DispatchStore    | dispatches table| Prompt queue with status lifecycle, approval gate, issue linking |
 | ActivityStore    | activity table  | Append-only event log                       |
 | NoteStore        | notes + notes_fts + filesystem | Metadata in SQLite, content as .md files |
 | MetricStore      | metrics table   | Per-request method/path/status/duration     |
@@ -196,7 +200,7 @@ Database file: `/data/dashboard.db` (volume-mounted from host).
 
 ### Migrations
 
-11 sequential migrations (index 0 through 10), tracked in a `schema_version`
+12 sequential migrations (index 0 through 11), tracked in a `schema_version`
 table. Append-only -- never edit or reorder existing entries. Applied
 automatically on startup inside transactions.
 
@@ -213,6 +217,7 @@ automatically on startup inside transactions.
 | 8     | scheduled_tasks                    | Cron-like task runner            |
 | 9     | pipeline_history                   | Pipeline stage transition audit  |
 | 10    | (alter pipeline_states)            | Add `site_slug` column for dev-pipeline folder mapping |
+| 11    | (alter dispatches)                 | Add `source_issue_id`, `approval_status` columns + indexes for issue-driven dispatches |
 
 ### FTS5 Usage
 
@@ -240,14 +245,20 @@ Message envelope:
 
 ```json
 {
-  "type": "dispatch_update | pipeline_update",
+  "type": "<event_type>",
   "payload": { ... }
 }
 ```
 
-Used by:
-- Dispatch processor -- pushes status changes (queued, running, complete, failed).
-- Pipeline scheduler -- pushes stage transition notifications.
+Event types:
+- `new_dispatch` -- new dispatch created via API
+- `dispatch_update` -- dispatch started running (includes `dispatch_id`, `status`, `chunk`)
+- `dispatch_progress` -- stdout line from Claude CLI during execution
+- `dispatch_completed` -- dispatch finished (success or failure)
+- `issue_dispatched` -- auto-approved dispatch created from dev-pipeline issue
+- `issue_needs_approval` -- dispatch created from issue, requires human approval
+- `pipeline_update` -- stage transition notification
+- `pipeline_kickback` -- stage kickback notification
 
 ## External Integrations
 
