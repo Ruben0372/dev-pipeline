@@ -66,6 +66,25 @@ Each site has these tabs (subfolders):
 | security/ | Security audits, compliance |
 | issues/ | Structured issue reports (timestamped, YAML frontmatter with severity/domain/status) |
 
+## Capabilities
+
+### Backend Pipeline (existing)
+Standard 8-stage loop with agents for code review, security, TDD, build errors, and E2E testing. Language-specific reviewers for Go, Python, Kotlin.
+
+### Frontend Pipeline (added 2026-03-28)
+Specialized agent suite for React/Next.js/Tailwind/Framer Motion frontends. See `architecture/frontend-tooling.md` for full spec.
+
+| Component | Count | Details |
+|-----------|-------|---------|
+| Agents | 4 | frontend-reviewer, frontend-perf, frontend-a11y, design-system-reviewer |
+| Skills | 3 | /frontend-audit, /component-gen, /animation-patterns |
+| Hooks | 3 | a11y lint, CSS anti-pattern, bundle guard (all PostToolUse) |
+| Rules | 1 | frontend-pipeline.md (PR checklist, animation guidelines) |
+| MCP | 1 | Figma MCP template (awaiting auth) |
+
+### Domain-Specific (Vitalis)
+10 specialized agents for HIPAA/SOC2/GDPR compliance, multi-tenancy, CRDT sync, and wellness domain logic.
+
 ## Active Sites
 
 | Site | Project | Slug |
