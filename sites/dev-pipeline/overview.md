@@ -10,15 +10,19 @@ v1.0.1 — issue reporting, auto-dispatch, multi-project profiles, observability
 
 ## Tech
 
-- **Repo**: github.com/Ruben0372/dev-pipeline
-- **Integration**: The Tower reads `sites/` directory for site records
-- **Sync**: Arch pulls repo every 2 min via scheduled task in The Tower API
-- **Hooks**: Claude Code `Stop` hook reminds agents to update Notion tasks
-- **Scaffold**: `scripts/scaffold.sh` creates standardized site record folders
+* **Repo**: github.com/Ruben0372/dev-pipeline
+
+* **Integration**: The Tower reads `sites/` directory for site records
+
+* **Sync**: Arch pulls repo every 2 min via scheduled task in The Tower API
+
+* **Hooks**: Claude Code `Stop` hook reminds agents to update Notion tasks
+
+* **Scaffold**: `scripts/scaffold.sh` creates standardized site record folders
 
 ## Structure
 
-```
+```text
 dev-pipeline/
 ├── sites/                    # Per-project documentation
 │   ├── dashboard/            # The Tower
@@ -51,53 +55,58 @@ dev-pipeline/
 
 Each site has these tabs (subfolders):
 
-| Folder | Purpose |
-|--------|---------|
-| overview.md | Project identity, tech stack, links |
-| architecture/ | System design, diagrams, ADRs |
-| api/ | API endpoints, schemas |
-| plans/ | Implementation plans, phase breakdowns |
-| requirements/ | PRDs, feature specs |
-| handoffs/ | Session handoff docs |
-| retros/ | Retrospectives, post-mortems |
-| operations/ | Deploy guides, runbooks |
-| reports/ | Metrics, performance reviews |
-| reviews/ | Code review summaries |
-| security/ | Security audits, compliance |
-| issues/ | Structured issue reports (timestamped, YAML frontmatter with severity/domain/status) |
+| Folder        | Purpose                                                                              |
+| ------------- | ------------------------------------------------------------------------------------ |
+| overview.md   | Project identity, tech stack, links                                                  |
+| architecture/ | System design, diagrams, ADRs                                                        |
+| api/          | API endpoints, schemas                                                               |
+| plans/        | Implementation plans, phase breakdowns                                               |
+| requirements/ | PRDs, feature specs                                                                  |
+| handoffs/     | Session handoff docs                                                                 |
+| retros/       | Retrospectives, post-mortems                                                         |
+| operations/   | Deploy guides, runbooks                                                              |
+| reports/      | Metrics, performance reviews                                                         |
+| reviews/      | Code review summaries                                                                |
+| security/     | Security audits, compliance                                                          |
+| issues/       | Structured issue reports (timestamped, YAML frontmatter with severity/domain/status) |
 
 ## Capabilities
 
 ### Backend Pipeline (existing)
+
 Standard 8-stage loop with agents for code review, security, TDD, build errors, and E2E testing. Language-specific reviewers for Go, Python, Kotlin.
 
 ### Frontend Pipeline (added 2026-03-28)
+
 Specialized agent suite for React/Next.js/Tailwind/Framer Motion frontends. See `architecture/frontend-tooling.md` for full spec.
 
-| Component | Count | Details |
-|-----------|-------|---------|
-| Agents | 4 | frontend-reviewer, frontend-perf, frontend-a11y, design-system-reviewer |
-| Skills | 3 | /frontend-audit, /component-gen, /animation-patterns |
-| Hooks | 3 | a11y lint, CSS anti-pattern, bundle guard (all PostToolUse) |
-| Rules | 1 | frontend-pipeline.md (PR checklist, animation guidelines) |
-| MCP | 1 | Figma MCP template (awaiting auth) |
+| Component | Count | Details                                                                 |
+| --------- | ----- | ----------------------------------------------------------------------- |
+| Agents    | 4     | frontend-reviewer, frontend-perf, frontend-a11y, design-system-reviewer |
+| Skills    | 3     | /frontend-audit, /component-gen, /animation-patterns                    |
+| Hooks     | 3     | a11y lint, CSS anti-pattern, bundle guard (all PostToolUse)             |
+| Rules     | 1     | frontend-pipeline.md (PR checklist, animation guidelines)               |
+| MCP       | 1     | Figma MCP template (awaiting auth)                                      |
 
 ### Domain-Specific (Vitalis)
+
 10 specialized agents for HIPAA/SOC2/GDPR compliance, multi-tenancy, CRDT sync, and wellness domain logic.
 
 ## Active Sites
 
-| Site | Project | Slug |
-|------|---------|------|
-| dashboard | The Tower | `dashboard` |
+| Site         | Project      | Slug           |
+| ------------ | ------------ | -------------- |
+| dashboard    | The Tower    | `dashboard`    |
 | dev-pipeline | Dev Pipeline | `dev-pipeline` |
-| portfolio | Portfolio | `portfolio` |
+| portfolio    | Portfolio    | `portfolio`    |
 
 ## Links
 
-- GitHub: github.com/Ruben0372/dev-pipeline
-- Notion Projects DB: 325acd44-b460-808e-9462-ee5c4bd60f0a
-- The Tower: 100.103.184.98:3009/sites
+* GitHub: github.com/Ruben0372/dev-pipeline
+
+* Notion Projects DB: 325acd44-b460-808e-9462-ee5c4bd60f0a
+
+* The Tower: 100.103.184.98:3009/sites
 
 ## Current Status
 
