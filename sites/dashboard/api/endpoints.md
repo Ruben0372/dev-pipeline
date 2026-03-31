@@ -10,7 +10,7 @@ All endpoints return `application/json`. Errors use a consistent envelope:
 
 When an optional service (Notion, Google Calendar, Weather) is not configured, the corresponding endpoints return `503 Service Unavailable`.
 
----
+***
 
 ## Health
 
@@ -38,7 +38,7 @@ Returns API health status including database connectivity.
 }
 ```
 
----
+***
 
 ## Projects (Notion Proxy)
 
@@ -70,11 +70,11 @@ List all projects.
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 502 | Notion API error |
-| 503 | Notion service not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 502    | Notion API error              |
+| 503    | Notion service not configured |
 
 ### GET /api/projects/{id}
 
@@ -84,14 +84,14 @@ Get a single project by Notion page ID.
 
 **Response (200)** -- single Project object (same shape as above)
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing project ID |
-| 502 | Notion API error |
-| 503 | Notion service not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 400    | Missing project ID            |
+| 502    | Notion API error              |
+| 503    | Notion service not configured |
 
----
+***
 
 ## Pipeline
 
@@ -120,11 +120,11 @@ List all project pipeline states.
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 500    | Internal error                |
+| 503    | Pipeline store not configured |
 
 ### GET /api/pipeline/{projectId}
 
@@ -151,12 +151,12 @@ Get a single project's pipeline state and transition history.
 }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 404 | Project not in pipeline |
-| 500 | Internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 404    | Project not in pipeline       |
+| 500    | Internal error                |
+| 503    | Pipeline store not configured |
 
 ### POST /api/pipeline/{projectId}/onboard
 
@@ -177,12 +177,12 @@ Both fields are optional. `stage` defaults to `"ideate"`, `project_name` default
 
 **Response (201)** -- PipelineState object
 
-| Status | Meaning |
-|--------|---------|
-| 201 | Created |
-| 400 | Invalid stage or JSON |
-| 500 | Internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 201    | Created                       |
+| 400    | Invalid stage or JSON         |
+| 500    | Internal error                |
+| 503    | Pipeline store not configured |
 
 ### PUT /api/pipeline/{projectId}/stage
 
@@ -201,12 +201,12 @@ Advance a project to a new stage. Broadcasts a `pipeline_update` WebSocket event
 
 **Response (200)** -- updated PipelineState object
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Invalid stage or JSON |
-| 500 | Project not found or internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                             |
+| ------ | ----------------------------------- |
+| 200    | Success                             |
+| 400    | Invalid stage or JSON               |
+| 500    | Project not found or internal error |
+| 503    | Pipeline store not configured       |
 
 ### PUT /api/pipeline/{projectId}/kickback
 
@@ -225,12 +225,12 @@ Move a project to a previous stage with a reason. Broadcasts a `pipeline_kickbac
 
 **Response (200)** -- updated PipelineState object
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Invalid stage or JSON |
-| 500 | Project not found or internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                             |
+| ------ | ----------------------------------- |
+| 200    | Success                             |
+| 400    | Invalid stage or JSON               |
+| 500    | Project not found or internal error |
+| 503    | Pipeline store not configured       |
 
 ### PUT /api/pipeline/{projectId}/slug
 
@@ -250,12 +250,12 @@ Set the site slug for a project. The site slug maps a Notion project UUID to a d
 
 **Response (200)** -- updated PipelineState object (includes `site_slug` field)
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing or empty site_slug, or invalid JSON |
-| 500 | Project not found or internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                                     |
+| ------ | ------------------------------------------- |
+| 200    | Success                                     |
+| 400    | Missing or empty site_slug, or invalid JSON |
+| 500    | Project not found or internal error         |
+| 503    | Pipeline store not configured               |
 
 ### GET /api/pipeline/{projectId}/history
 
@@ -265,13 +265,13 @@ Get stage transition history for a project (last 50 entries).
 
 **Response (200)** -- array of PipelineHistoryEntry objects
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Pipeline store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 500    | Internal error                |
+| 503    | Pipeline store not configured |
 
----
+***
 
 ## Calendar (Google Calendar Proxy)
 
@@ -281,9 +281,9 @@ List calendar events for the next N days.
 
 **Query params:**
 
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| days | int | 7 | Number of days to fetch (1-30, clamped to 30) |
+| Param | Type | Default | Description                                   |
+| ----- | ---- | ------- | --------------------------------------------- |
+| days  | int  | 7       | Number of days to fetch (1-30, clamped to 30) |
 
 **Response (200)**
 
@@ -307,14 +307,14 @@ List calendar events for the next N days.
 }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Invalid `days` param |
-| 502 | Google Calendar API error |
-| 503 | Calendar service not configured |
+| Status | Meaning                         |
+| ------ | ------------------------------- |
+| 200    | Success                         |
+| 400    | Invalid `days` param            |
+| 502    | Google Calendar API error       |
+| 503    | Calendar service not configured |
 
----
+***
 
 ## Tasks
 
@@ -326,9 +326,9 @@ List tasks, optionally filtered by status.
 
 **Query params:**
 
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| status | string | (none) | Filter by task status |
+| Param  | Type   | Default | Description           |
+| ------ | ------ | ------- | --------------------- |
+| status | string | (none)  | Filter by task status |
 
 **Response (200)** -- array of Task objects
 
@@ -350,11 +350,11 @@ List tasks, optionally filtered by status.
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Task store not configured |
+| Status | Meaning                   |
+| ------ | ------------------------- |
+| 200    | Success                   |
+| 500    | Internal error            |
+| 503    | Task store not configured |
 
 ### POST /api/tasks
 
@@ -375,12 +375,12 @@ Create a new task. If Notion sync is configured, the task is asynchronously push
 
 **Response (201)** -- the created Task object
 
-| Status | Meaning |
-|--------|---------|
-| 201 | Created |
-| 400 | Missing title or invalid JSON |
-| 500 | Internal error |
-| 503 | Task store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 201    | Created                       |
+| 400    | Missing title or invalid JSON |
+| 500    | Internal error                |
+| 503    | Task store not configured     |
 
 ### PUT /api/tasks/{id}
 
@@ -403,13 +403,13 @@ Update an existing task. Only provided fields are merged onto the existing recor
 
 **Response (200)** -- the updated Task object
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing ID or invalid JSON |
-| 404 | Task not found |
-| 500 | Internal error |
-| 503 | Task store not configured |
+| Status | Meaning                    |
+| ------ | -------------------------- |
+| 200    | Success                    |
+| 400    | Missing ID or invalid JSON |
+| 404    | Task not found             |
+| 500    | Internal error             |
+| 503    | Task store not configured  |
 
 ### DELETE /api/tasks/{id}
 
@@ -419,12 +419,12 @@ Delete a task by ID.
 
 **Response:** 204 No Content (empty body)
 
-| Status | Meaning |
-|--------|---------|
-| 204 | Deleted |
-| 400 | Missing ID |
-| 500 | Internal error |
-| 503 | Task store not configured |
+| Status | Meaning                   |
+| ------ | ------------------------- |
+| 204    | Deleted                   |
+| 400    | Missing ID                |
+| 500    | Internal error            |
+| 503    | Task store not configured |
 
 ### POST /api/tasks/sync
 
@@ -434,13 +434,13 @@ Trigger a full Notion-to-local task sync.
 
 **Response (200)** -- sync result object from the TaskSyncService
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 502 | Notion API error |
-| 503 | Notion sync not configured |
+| Status | Meaning                    |
+| ------ | -------------------------- |
+| 200    | Success                    |
+| 502    | Notion API error           |
+| 503    | Notion sync not configured |
 
----
+***
 
 ## Notes
 
@@ -465,11 +465,11 @@ List all notes (metadata only, no content).
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Note store not configured |
+| Status | Meaning                   |
+| ------ | ------------------------- |
+| 200    | Success                   |
+| 500    | Internal error            |
+| 503    | Note store not configured |
 
 ### GET /api/notes/search
 
@@ -477,18 +477,18 @@ Full-text search over notes using FTS5.
 
 **Query params:**
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| q | string | yes | Search query |
+| Param | Type   | Required | Description  |
+| ----- | ------ | -------- | ------------ |
+| q     | string | yes      | Search query |
 
 **Response (200)** -- array of matching Note objects
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing `q` param |
-| 500 | Internal error |
-| 503 | Note store not configured |
+| Status | Meaning                   |
+| ------ | ------------------------- |
+| 200    | Success                   |
+| 400    | Missing `q` param         |
+| 500    | Internal error            |
+| 503    | Note store not configured |
 
 ### GET /api/notes/{slug}
 
@@ -498,13 +498,13 @@ Get a single note with content. Wiki-links in content are resolved before respon
 
 **Response (200)** -- Note object with `content` field populated
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing slug |
-| 404 | Note not found |
-| 500 | Internal error |
-| 503 | Note store not configured |
+| Status | Meaning                   |
+| ------ | ------------------------- |
+| 200    | Success                   |
+| 400    | Missing slug              |
+| 404    | Note not found            |
+| 500    | Internal error            |
+| 503    | Note store not configured |
 
 ### POST /api/notes
 
@@ -523,13 +523,13 @@ Create a new note. Slug is auto-generated from the title.
 
 **Response (201)** -- the created Note object
 
-| Status | Meaning |
-|--------|---------|
-| 201 | Created |
-| 400 | Missing title or invalid JSON |
-| 409 | Duplicate slug (title collision) |
-| 500 | Internal error |
-| 503 | Note store not configured |
+| Status | Meaning                          |
+| ------ | -------------------------------- |
+| 201    | Created                          |
+| 400    | Missing title or invalid JSON    |
+| 409    | Duplicate slug (title collision) |
+| 500    | Internal error                   |
+| 503    | Note store not configured        |
 
 ### PUT /api/notes/{slug}
 
@@ -552,15 +552,15 @@ Update an existing note's title, content, project, and tags.
 
 **Known bug (v1.0):** This endpoint can crash due to an FTS5 virtual table SQL issue. Fixed in v1.0.1.
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing slug/title or invalid JSON |
-| 404 | Note not found |
-| 500 | Internal error (includes FTS5 bug) |
-| 503 | Note store not configured |
+| Status | Meaning                            |
+| ------ | ---------------------------------- |
+| 200    | Success                            |
+| 400    | Missing slug/title or invalid JSON |
+| 404    | Note not found                     |
+| 500    | Internal error (includes FTS5 bug) |
+| 503    | Note store not configured          |
 
----
+***
 
 ## Canvas
 
@@ -587,11 +587,11 @@ List all canvases (strokes omitted for performance).
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Canvas store not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 200    | Success                     |
+| 500    | Internal error              |
+| 503    | Canvas store not configured |
 
 ### POST /api/canvases
 
@@ -612,12 +612,12 @@ All fields are optional. Width defaults to 1920, height to 1080.
 
 **Response (201)** -- the created Canvas object (with strokes as `"[]"`)
 
-| Status | Meaning |
-|--------|---------|
-| 201 | Created |
-| 400 | Invalid JSON |
-| 500 | Internal error |
-| 503 | Canvas store not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 201    | Created                     |
+| 400    | Invalid JSON                |
+| 500    | Internal error              |
+| 503    | Canvas store not configured |
 
 ### GET /api/canvases/{id}
 
@@ -627,12 +627,12 @@ Get a single canvas with full stroke data.
 
 **Response (200)** -- Canvas object with strokes
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 404 | Canvas not found |
-| 500 | Internal error |
-| 503 | Canvas store not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 200    | Success                     |
+| 404    | Canvas not found            |
+| 500    | Internal error              |
+| 503    | Canvas store not configured |
 
 ### PUT /api/canvases/{id}
 
@@ -651,12 +651,12 @@ Update a canvas title and/or strokes. Only provided fields are updated.
 
 **Response (200)** -- the updated Canvas object
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Invalid JSON |
-| 500 | Internal error |
-| 503 | Canvas store not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 200    | Success                     |
+| 400    | Invalid JSON                |
+| 500    | Internal error              |
+| 503    | Canvas store not configured |
 
 ### DELETE /api/canvases/{id}
 
@@ -666,13 +666,13 @@ Delete a canvas.
 
 **Response:** 204 No Content (empty body)
 
-| Status | Meaning |
-|--------|---------|
-| 204 | Deleted |
-| 404 | Canvas not found |
-| 503 | Canvas store not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 204    | Deleted                     |
+| 404    | Canvas not found            |
+| 503    | Canvas store not configured |
 
----
+***
 
 ## Pomodoro
 
@@ -706,12 +706,12 @@ Record a completed pomodoro session.
 }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 201 | Created |
-| 400 | Invalid JSON or missing duration |
-| 500 | Internal error |
-| 503 | Pomodoro store not configured |
+| Status | Meaning                          |
+| ------ | -------------------------------- |
+| 201    | Created                          |
+| 400    | Invalid JSON or missing duration |
+| 500    | Internal error                   |
+| 503    | Pomodoro store not configured    |
 
 ### GET /api/pomodoro/sessions
 
@@ -719,19 +719,19 @@ List pomodoro sessions within a time range.
 
 **Query params:**
 
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| hours | int | 168 (7 days) | Lookback window in hours |
+| Param | Type | Default      | Description              |
+| ----- | ---- | ------------ | ------------------------ |
+| hours | int  | 168 (7 days) | Lookback window in hours |
 
 **Response (200)** -- array of PomodoroSession objects
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Pomodoro store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 500    | Internal error                |
+| 503    | Pomodoro store not configured |
 
----
+***
 
 ## Weather
 
@@ -741,13 +741,13 @@ Get current weather data from the Open-Meteo API. Requires `WEATHER_LAT` and `WE
 
 **Response (200)** -- weather data object (shape determined by Open-Meteo response)
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 502 | Open-Meteo API error |
-| 503 | Weather service not configured |
+| Status | Meaning                        |
+| ------ | ------------------------------ |
+| 200    | Success                        |
+| 502    | Open-Meteo API error           |
+| 503    | Weather service not configured |
 
----
+***
 
 ## Metrics
 
@@ -757,9 +757,9 @@ Get aggregated API request metrics for a time range. All requests are recorded b
 
 **Query params:**
 
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| hours | int | 24 | Lookback window in hours (1-720) |
+| Param | Type | Default | Description                      |
+| ----- | ---- | ------- | -------------------------------- |
+| hours | int  | 24      | Lookback window in hours (1-720) |
 
 **Response (200)**
 
@@ -780,13 +780,13 @@ Get aggregated API request metrics for a time range. All requests are recorded b
 }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Metrics not configured |
+| Status | Meaning                |
+| ------ | ---------------------- |
+| 200    | Success                |
+| 500    | Internal error         |
+| 503    | Metrics not configured |
 
----
+***
 
 ## Dispatch
 
@@ -830,11 +830,11 @@ List all dispatches, ordered by most recent first. Supports pagination.
 }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Dispatch service not configured |
+| Status | Meaning                         |
+| ------ | ------------------------------- |
+| 200    | Success                         |
+| 500    | Internal error                  |
+| 503    | Dispatch service not configured |
 
 ### POST /api/dispatch
 
@@ -851,12 +851,12 @@ Queue a new work dispatch. Created with `approval_status = "auto"` (executes imm
 
 **Response (201)** -- the created Dispatch object (status will be `"queued"`)
 
-| Status | Meaning |
-|--------|---------|
-| 201 | Created |
-| 400 | Missing prompt or invalid JSON |
-| 500 | Internal error |
-| 503 | Dispatch service not configured |
+| Status | Meaning                         |
+| ------ | ------------------------------- |
+| 201    | Created                         |
+| 400    | Missing prompt or invalid JSON  |
+| 500    | Internal error                  |
+| 503    | Dispatch service not configured |
 
 ### GET /api/dispatch/{id}
 
@@ -866,13 +866,13 @@ Get a single dispatch by ID, including output if completed.
 
 **Response (200)** -- Dispatch object
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing ID |
-| 404 | Dispatch not found |
-| 500 | Internal error |
-| 503 | Dispatch service not configured |
+| Status | Meaning                         |
+| ------ | ------------------------------- |
+| 200    | Success                         |
+| 400    | Missing ID                      |
+| 404    | Dispatch not found              |
+| 500    | Internal error                  |
+| 503    | Dispatch service not configured |
 
 ### PUT /api/dispatch/{id}/approve
 
@@ -886,11 +886,11 @@ Approve a dispatch that is pending human review. Only works if `approval_status 
 { "status": "approved", "id": "uuid" }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Approved |
-| 400 | Dispatch is not pending approval |
-| 404 | Dispatch not found |
+| Status | Meaning                          |
+| ------ | -------------------------------- |
+| 200    | Approved                         |
+| 400    | Dispatch is not pending approval |
+| 404    | Dispatch not found               |
 
 ### PUT /api/dispatch/{id}/reject
 
@@ -904,10 +904,10 @@ Reject a dispatch. Sets `approval_status = "rejected"` and `status = "failed"` w
 { "status": "rejected", "id": "uuid" }
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Rejected |
-| 404 | Dispatch not found |
+| Status | Meaning            |
+| ------ | ------------------ |
+| 200    | Rejected           |
+| 404    | Dispatch not found |
 
 ### WS /ws/dispatch
 
@@ -925,21 +925,29 @@ The server pushes JSON messages for dispatch execution progress, pipeline stage 
 ```
 
 **Event types:**
-- `new_dispatch` -- dispatch created via API
-- `dispatch_update` -- dispatch started running
-- `dispatch_progress` -- stdout line from Claude CLI
-- `dispatch_completed` -- dispatch finished (success or failure)
-- `issue_dispatched` -- auto-approved dispatch from dev-pipeline issue
-- `issue_needs_approval` -- dispatch from issue, needs human review
-- `pipeline_update` -- stage advance
-- `pipeline_kickback` -- stage kickback
 
-| Status | Meaning |
-|--------|---------|
-| 101 | Switching Protocols (upgrade successful) |
-| 503 | WebSocket hub not configured |
+* `new_dispatch` -- dispatch created via API
 
----
+* `dispatch_update` -- dispatch started running
+
+* `dispatch_progress` -- stdout line from Claude CLI
+
+* `dispatch_completed` -- dispatch finished (success or failure)
+
+* `issue_dispatched` -- auto-approved dispatch from dev-pipeline issue
+
+* `issue_needs_approval` -- dispatch from issue, needs human review
+
+* `pipeline_update` -- stage advance
+
+* `pipeline_kickback` -- stage kickback
+
+| Status | Meaning                                  |
+| ------ | ---------------------------------------- |
+| 101    | Switching Protocols (upgrade successful) |
+| 503    | WebSocket hub not configured             |
+
+***
 
 ## Activity
 
@@ -951,10 +959,10 @@ List recent activity entries.
 
 **Query params:**
 
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| project | string | (none) | Filter by project name |
-| limit | int | 50 | Maximum entries to return |
+| Param   | Type   | Default | Description               |
+| ------- | ------ | ------- | ------------------------- |
+| project | string | (none)  | Filter by project name    |
+| limit   | int    | 50      | Maximum entries to return |
 
 **Response (200)** -- array of Activity objects
 
@@ -971,11 +979,11 @@ List recent activity entries.
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Activity store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 500    | Internal error                |
+| 503    | Activity store not configured |
 
 ### GET /api/activity/{id}
 
@@ -985,15 +993,15 @@ Get a single activity entry with full detail.
 
 **Response (200)** -- Activity object
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Missing ID |
-| 404 | Activity not found |
-| 500 | Internal error |
-| 503 | Activity store not configured |
+| Status | Meaning                       |
+| ------ | ----------------------------- |
+| 200    | Success                       |
+| 400    | Missing ID                    |
+| 404    | Activity not found            |
+| 500    | Internal error                |
+| 503    | Activity store not configured |
 
----
+***
 
 ## Site Records
 
@@ -1009,9 +1017,9 @@ List all records for a project.
 
 **Query params:**
 
-| Param | Type | Default | Description |
-|-------|------|---------|-------------|
-| category | string | (none) | Filter by category folder name |
+| Param    | Type   | Default | Description                    |
+| -------- | ------ | ------- | ------------------------------ |
+| category | string | (none)  | Filter by category folder name |
 
 **Response (200)** -- array of SiteRecord objects (content omitted)
 
@@ -1028,11 +1036,11 @@ List all records for a project.
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success (empty array if project dir missing) |
-| 500 | Internal error |
-| 503 | Site records not configured (DEV_PIPELINE_REPO_PATH not set) |
+| Status | Meaning                                                      |
+| ------ | ------------------------------------------------------------ |
+| 200    | Success (empty array if project dir missing)                 |
+| 500    | Internal error                                               |
+| 503    | Site records not configured (DEV_PIPELINE_REPO_PATH not set) |
 
 ### GET /api/sites/{projectId}/categories
 
@@ -1053,11 +1061,11 @@ List folder categories with document counts.
 ]
 ```
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 500 | Internal error |
-| 503 | Site records not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 200    | Success                     |
+| 500    | Internal error              |
+| 503    | Site records not configured |
 
 ### GET /api/sites/{projectId}/records/{slug}
 
@@ -1067,12 +1075,12 @@ Get a single record with full markdown content. Slug format: `"overview"` for ro
 
 **Response (200)** -- SiteRecord object with `content` field populated
 
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 404 | Record not found |
-| 500 | Internal error |
-| 503 | Site records not configured |
+| Status | Meaning                     |
+| ------ | --------------------------- |
+| 200    | Success                     |
+| 404    | Record not found            |
+| 500    | Internal error              |
+| 503    | Site records not configured |
 
 ### POST /api/sites/{projectId}/records
 
@@ -1086,28 +1094,28 @@ Get a single record with full markdown content. Slug format: `"overview"` for ro
 
 **Always returns 405.** Records are managed via the dev-pipeline git repo.
 
----
+***
 
 ## Middleware
 
 All requests pass through the following Chi middleware stack:
 
-| Middleware | Purpose |
-|------------|---------|
-| Logger | Logs method, path, status, and duration for every request |
-| Recoverer | Catches panics and returns 500 instead of crashing |
-| RequestID | Assigns a unique ID to each request |
-| MetricsMiddleware | Records request method, path, status code, and duration to SQLite |
-| CORS | Allows requests from `http://100.103.184.98:3009` and `http://localhost:3009` |
+| Middleware        | Purpose                                                                       |
+| ----------------- | ----------------------------------------------------------------------------- |
+| Logger            | Logs method, path, status, and duration for every request                     |
+| Recoverer         | Catches panics and returns 500 instead of crashing                            |
+| RequestID         | Assigns a unique ID to each request                                           |
+| MetricsMiddleware | Records request method, path, status code, and duration to SQLite             |
+| CORS              | Allows requests from `http://100.103.184.98:3009` and `http://localhost:3009` |
 
----
+***
 
 ## Background Services
 
-| Service | Interval | Description |
-|---------|----------|-------------|
-| TaskSyncService | 2 minutes | Polls Notion tasks DB and syncs to local SQLite |
-| Pipeline Audit Scheduler | 5 minutes | Audits pipeline states and broadcasts updates via WebSocket |
-| Dispatch Processor | 5-second poll | Delegates to DispatchExecutor.ProcessApproved(), one dispatch at a time |
-| IssueScanner | On schedule | Converts open dev-pipeline issues to dispatches with severity-based approval |
-| WebSocket Hub | Continuous | Manages client connections and broadcasts events |
+| Service                  | Interval      | Description                                                                  |
+| ------------------------ | ------------- | ---------------------------------------------------------------------------- |
+| TaskSyncService          | 2 minutes     | Polls Notion tasks DB and syncs to local SQLite                              |
+| Pipeline Audit Scheduler | 5 minutes     | Audits pipeline states and broadcasts updates via WebSocket                  |
+| Dispatch Processor       | 5-second poll | Delegates to DispatchExecutor.ProcessApproved(), one dispatch at a time      |
+| IssueScanner             | On schedule   | Converts open dev-pipeline issues to dispatches with severity-based approval |
+| WebSocket Hub            | Continuous    | Manages client connections and broadcasts events                             |
