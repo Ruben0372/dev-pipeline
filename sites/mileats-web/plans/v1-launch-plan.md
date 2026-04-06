@@ -8,7 +8,7 @@
 * [x] Verify `npm run dev` boots clean and renders all 4 pages
 * [x] Verify TypeScript passes: `npm run typecheck`
 * [x] Set up Loops account, create customer + rider audiences, capture audience IDs
-* [ ] Set up Resend (or reuse MilEats backend Resend account), create dedicated `noreply@mileatsdelivery.com` sender
+* [x] Set up Resend (or reuse MilEats backend Resend account), create dedicated `noreply@mileatsdelivery.com` sender
 * [ ] Populate `.env.local` with real API keys
 * [ ] Test waitlist submission end-to-end (both customer and rider variants)
 * [ ] Test contact form end-to-end (all 4 categories)
