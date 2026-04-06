@@ -5,7 +5,7 @@
 ## Phase Setup (now → ~April 13)
 
 * [x] `npm install` (run from `~/projects/mileats-codebase/mileats-web/`)
-* [ ] Verify `npm run dev` boots clean and renders all 4 pages
+* [x] Verify `npm run dev` boots clean and renders all 4 pages
 * [ ] Verify TypeScript passes: `npm run typecheck`
 * [ ] Set up Loops account, create customer + rider audiences, capture audience IDs
 * [ ] Set up Resend (or reuse MilEats backend Resend account), create dedicated `noreply@mileatsdelivery.com` sender
