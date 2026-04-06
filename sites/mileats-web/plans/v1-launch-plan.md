@@ -9,7 +9,7 @@
 * [x] Verify TypeScript passes: `npm run typecheck`
 * [x] Set up Loops account, create customer + rider audiences, capture audience IDs
 * [x] Set up Resend (or reuse MilEats backend Resend account), create dedicated `noreply@mileatsdelivery.com` sender
-* [ ] Populate `.env.local` with real API keys
+* [x] Populate `.env.local` with real API keys
 * [ ] Test waitlist submission end-to-end (both customer and rider variants)
 * [ ] Test contact form end-to-end (all 4 categories)
 * [ ] Buy PP Neue Montreal license ($40) and drop woff2 into `mileats-brand/typography/web/`
