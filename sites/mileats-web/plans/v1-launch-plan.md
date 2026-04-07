@@ -12,7 +12,7 @@
 * [x] Populate `.env.local` with real API keys
 * [x] Test waitlist submission end-to-end (both customer and rider variants)
 * [x] Test contact form end-to-end (all 4 categories)
-* [ ] Buy PP Neue Montreal license ($40) and drop woff2 into `mileats-brand/typography/web/`
+* [x] Buy PP Neue Montreal license ($40) and drop woff2 into `mileats-brand/typography/web/`
 * [ ] Wire `next/font/local` declaration in `src/app/layout.tsx`
 
 ## Phase Build (~April 13 → ~May 4)
