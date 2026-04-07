@@ -28,7 +28,7 @@
 
 * [x] Replace placeholder hero images with real photography (or art-directed Unsplash+ stopgaps tagged `placeholder-`)
 * [ ] Refine copy on all sections — pull from `mileats-brand/voice/`
-* [ ] Add Framer Motion scroll reveals to section headlines (use `animation-patterns` skill, `variants` on parent only)
+* [x] Add Framer Motion scroll reveals to section headlines (use `animation-patterns` skill, `variants` on parent only)
 * [ ] Add subtle hero animation (consider: typography reveal, fork-in-M draw-in, or static for v1)
 * [ ] Add favicon + OpenGraph image (export from logo source after the renaming task)
 * [ ] Add JSON-LD structured data for organization + website
