@@ -30,7 +30,7 @@
 * [x] Refine copy on all sections — pull from `mileats-brand/voice/`
 * [x] Add Framer Motion scroll reveals to section headlines (use `animation-patterns` skill, `variants` on parent only)
 * [x] Add subtle hero animation (consider: typography reveal, fork-in-M draw-in, or static for v1)
-* [ ] Add favicon + OpenGraph image (export from logo source after the renaming task)
+* [x] Add favicon + OpenGraph image (export from logo source after the renaming task)
 * [ ] Add JSON-LD structured data for organization + website
 * [ ] Run `frontend-a11y` agent — fix all CRITICAL/HIGH
 * [ ] Run `frontend-perf` agent — ensure LCP < 2.5s, CLS < 0.1, INP < 200ms
