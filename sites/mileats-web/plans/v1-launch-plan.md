@@ -27,7 +27,7 @@
 ## Phase Build (~April 7 → ~May 4)
 
 * [x] Replace placeholder hero images with real photography (or art-directed Unsplash+ stopgaps tagged `placeholder-`)
-* [ ] Refine copy on all sections — pull from `mileats-brand/voice/`
+* [x] Refine copy on all sections — pull from `mileats-brand/voice/`
 * [x] Add Framer Motion scroll reveals to section headlines (use `animation-patterns` skill, `variants` on parent only)
 * [x] Add subtle hero animation (consider: typography reveal, fork-in-M draw-in, or static for v1)
 * [ ] Add favicon + OpenGraph image (export from logo source after the renaming task)
